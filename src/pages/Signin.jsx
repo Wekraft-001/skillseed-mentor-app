@@ -29,7 +29,7 @@ const Signin = () => {
               className="w-20 h-20 rounded-full mx-auto mb-4 border-4 border-[#FFC107]"
             />
             <h1 className="text-2xl font-bold text-[#0A1F44]">
-              Skillseed Parent Login
+              Skillseed Mentor Login
             </h1>
           </div>
 
