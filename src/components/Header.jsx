@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import axios from "axios";
 import { Bell, LogOut, ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSidebar } from "../context/SidebarContext";
 import { IoMenu } from "react-icons/io5";
 import {
@@ -13,7 +14,11 @@ import {
 import Logo from "../assets/logo.svg";
 
 const Header = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("mentorToken");
+  const [userData, setUserData] = useState({});
   const { toggleSidebar } = useSidebar();
+  const navigate = useNavigate();
 
   const notifications = [
     {
@@ -68,6 +73,33 @@ const Header = () => {
       type: "alert",
     },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("mentorToken");
+    navigate("/");
+  };
+
+  useEffect(() => {
+    const userDetails = () => {
+      axios
+        .get(`${apiURL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          // console.log(response.data, "User Info");
+          setUserData(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    userDetails();
+  }, []);
+
   const getNotificationIcon = (type) => {
     switch (type) {
       case "assignment_complete":
@@ -195,14 +227,14 @@ const Header = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <MenuItems className="absolute right-0 z-50 mt-2 w-[320px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none font-primaryRegular">
+            <MenuItems className="absolute right-0 z-50 mt-2 w-[320px] origin-top-right rounded-md bg-white py-1 shadow-lg focus:outline-none font-primaryRegular">
               <MenuItem>
                 <div className="p-4 pb-2 flex justify-between items-center border-b">
                   <h3 className="text-xl font-bold">Notifications</h3>
                 </div>
               </MenuItem>
               <hr />
-              <MenuItem>
+              {/* <MenuItem>
                 <div className="flex p-2 gap-2 border-b overflow-x-auto">
                   <button className="whitespace-nowrap bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-medium">
                     All
@@ -220,7 +252,7 @@ const Header = () => {
                     Alerts
                   </button>
                 </div>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem>
                 <div className="bg-blue-50 flex items-center p-4 gap-4">
                   <div className="bg-white p-2 rounded-full">
@@ -229,7 +261,7 @@ const Header = () => {
                   <div className="flex-1">
                     <p className="font-medium">Enable push notifications</p>
                   </div>
-                  <button className="rounded-full bg-black hover:bg-gray-800">
+                  <button className="rounded-full bg-black text-white p-2 font-semibold hover:bg-gray-800">
                     Manage
                   </button>
                 </div>
@@ -338,7 +370,7 @@ const Header = () => {
                   </div>
                 </div>
               </MenuItem>
-              <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
+              {/* <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
                 <div className="flex items-center gap-3 text-base">
                   <div className="p-2 bg-green-50 rounded-lg">
                     <svg
@@ -366,7 +398,7 @@ const Header = () => {
                     </div>
                   </div>
                 </div>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
                 <div className="flex items-center gap-3 text-base">
                   <div className="p-2 bg-purple-50 rounded-lg">
@@ -445,7 +477,7 @@ const Header = () => {
                   <div>
                     <div className="font-medium">Messages</div>
                     <div className="text-xs text-gray-500">
-                      From teachers and system
+                      From children and system
                     </div>
                   </div>
                   <span className="ml-auto bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -453,66 +485,14 @@ const Header = () => {
                   </span>
                 </div>
               </MenuItem>
-              <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
-                <div className="flex items-center gap-3 text-base">
-                  <div className="p-2 bg-gray-100 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-gray-600"
-                    >
-                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-medium">Parental Controls</div>
-                    <div className="text-xs text-gray-500">
-                      Manage settings & restrictions
-                    </div>
-                  </div>
-                </div>
-              </MenuItem>
-              <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
-                <div className="flex items-center gap-3 text-base">
-                  <div className="p-2 bg-blue-50 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-blue-600"
-                    >
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-medium">Parent Resources</div>
-                    <div className="text-xs text-gray-500">
-                      Guides & support
-                    </div>
-                  </div>
-                </div>
-              </MenuItem>
               <MenuItem>
-                <div className="flex items-center gap-3 text-base w-full justify-center py-3">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 text-base w-full justify-center py-3 hover:bg-gray-100 cursor-pointer"
+                >
                   <LogOut size={20} />
                   <span>Logout</span>
-                </div>
+                </button>
               </MenuItem>
             </MenuItems>
           </Transition>
