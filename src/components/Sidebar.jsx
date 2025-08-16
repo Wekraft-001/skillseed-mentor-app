@@ -98,19 +98,14 @@ const Sidebar = () => {
       path: "/profile-setup",
     },
     {
-      icon: <Shield className="w-5 h-5 mr-2" />,
-      label: "Verification",
-      path: "/verification",
+      icon: <Upload className="w-5 h-5 mr-2" />,
+      label: "Upload Credentials",
+      path: "/upload-credentials",
     },
     {
       icon: <Shield className="w-5 h-5 mr-2" />,
       label: "Safety Guidelines",
       path: "/safety-guidelines",
-    },
-    {
-      icon: <Upload className="w-5 h-5 mr-2" />,
-      label: "Upload Credentials",
-      path: "/upload-credentials",
     },
     {
       icon: <CalendarDays className="w-5 h-5 mr-2" />,
@@ -132,15 +127,20 @@ const Sidebar = () => {
       label: "Feedback",
       path: "/feedback",
     },
-    {
-      icon: <Mail className="w-5 h-5 mr-2" />,
-      label: "Messages",
-      path: "/messages",
-    },
+    // {
+    //   icon: <Mail className="w-5 h-5 mr-2" />,
+    //   label: "Messages",
+    //   path: "/messages",
+    // },
+    // {
+    //   icon: <FileText className="w-5 h-5 mr-2" />,
+    //   label: "Reports",
+    //   path: "/reports",
+    // },
     {
       icon: <FileText className="w-5 h-5 mr-2" />,
-      label: "Reports",
-      path: "/reports",
+      label: "Resources",
+      path: "/resources",
     },
   ];
 

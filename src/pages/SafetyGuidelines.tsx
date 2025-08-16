@@ -22,7 +22,7 @@ const SafetyGuidelines = () => {
     <main className="bg-[#F5F7FA] min-h-[900px] py-12">
       <div className="container mx-auto px-6">
         {/* Progress Bar */}
-        <div id="progress-tracker" className="mb-10">
+        {/* <div id="progress-tracker" className="mb-10">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-[#212121]">
               Safety Guidelines Progress
@@ -34,7 +34,7 @@ const SafetyGuidelines = () => {
               <div className="absolute -right-2 -top-1 w-5 h-5 bg-white rounded-full border-2 border-[#1A73E8]"></div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Safety Guidelines Form */}
         <div
@@ -219,10 +219,10 @@ const SafetyGuidelines = () => {
 
             {/* Action Buttons */}
             <div id="form-actions" className="flex justify-end space-x-4">
-              <button className="px-8 py-3 rounded-full border-2 border-[#1A73E8] text-[#1A73E8] hover:bg-blue-50">
+              {/* <button className="px-8 py-3 rounded-full border-2 border-[#1A73E8] text-[#1A73E8] hover:bg-blue-50">
                 <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
                 Back
-              </button>
+              </button> */}
               <button className="px-8 py-3 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600">
                 I Understand
                 <FontAwesomeIcon icon={faArrowRight} className="ml-2" />

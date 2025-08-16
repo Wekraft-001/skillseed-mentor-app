@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { Bell, LogOut, ShieldCheck } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSidebar } from "../context/SidebarContext";
@@ -16,7 +17,6 @@ import Logo from "../assets/logo.svg";
 const Header = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const token = localStorage.getItem("mentorToken");
-  const [userData, setUserData] = useState({});
   const { toggleSidebar } = useSidebar();
   const navigate = useNavigate();
 
@@ -78,27 +78,6 @@ const Header = () => {
     localStorage.removeItem("mentorToken");
     navigate("/");
   };
-
-  useEffect(() => {
-    const userDetails = () => {
-      axios
-        .get(`${apiURL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        })
-        .then((response) => {
-          // console.log(response.data, "User Info");
-          setUserData(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
-    };
-
-    userDetails();
-  }, []);
 
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -184,6 +163,35 @@ const Header = () => {
           </div>
         );
     }
+  };
+
+  const fetchUserDetails = async () => {
+    const { data } = await axios.get(`${apiURL}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    console.log(data);
+    return data;
+  };
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["userDetails"],
+    queryFn: fetchUserDetails,
+    enabled: !!token,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const getInitials = (firstName, lastName) => {
+    if (!firstName && !lastName) return "NN"; // fallback
+    const firstInitial = firstName ? firstName[0].toUpperCase() : "";
+    const lastInitial = lastName ? lastName[0].toUpperCase() : "";
+    return firstInitial + lastInitial;
   };
   return (
     <header className="h-16 border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 right-0 bg-white z-50">
@@ -313,7 +321,9 @@ const Header = () => {
             <MenuButton className="flex rounded-full text-sm focus:outline-none">
               <span className="sr-only">Open user menu</span>
               <div className="bg-[#3C91BA] w-10 h-10 text-lg font-semibold text-white text-center p-2 rounded-full mx-4 my-2 flex items-center justify-center">
-                SS
+                {userData
+                  ? getInitials(userData.firstName, userData.lastName)
+                  : "NN"}
               </div>
             </MenuButton>
           </div>
@@ -330,10 +340,17 @@ const Header = () => {
               <MenuItem>
                 <div className="p-4 flex items-center gap-4 border-b">
                   <div className="h-14 w-14 rounded-full flex items-center justify-center bg-[#3C91BA]">
-                    <div className="text-xl font-medium text-white">AA</div>
+                    <div className="text-xl font-medium text-white">
+                      {userData
+                        ? getInitials(userData.firstName, userData.lastName)
+                        : "NN"}
+                    </div>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">Sarah Johnson</h3>
+                    <h3 className="text-xl font-bold">
+                      {" "}
+                      {userData?.firstName + " " + userData?.lastName}
+                    </h3>
                     <p className="text-sm text-gray-500">
                       3 children connected
                     </p>

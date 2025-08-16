@@ -125,9 +125,6 @@ const Notes = () => {
             ></div>
           </div>
           <div className="flex gap-3">
-            <button className="rounded-full px-5 py-2 bg-[#FFC107] text-[#212121] font-semibold shadow-md hover:bg-yellow-200 transition-all flex items-center gap-2">
-              <FontAwesomeIcon icon={faShareNodes} /> Share
-            </button>
             <button className="rounded-full px-5 py-2 bg-[#1A73E8] text-white font-semibold shadow-md hover:bg-blue-600 transition-all flex items-center gap-2">
               <FontAwesomeIcon icon={faPlus} /> Add Note
             </button>
@@ -258,13 +255,6 @@ const Notes = () => {
                     icon={faCheckCircle}
                     className="text-green-400"
                   />
-                  <span>Visible to Student</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="text-green-400"
-                  />
                   <span>Visible to Parent</span>
                 </li>
                 <li className="flex items-center gap-2">
@@ -277,7 +267,7 @@ const Notes = () => {
               </ul>
               <div className="mt-6 text-sm text-gray-400">
                 <FontAwesomeIcon icon={faLock} className="mr-1" /> Notes are
-                only accessible to Sarah, her parents, and her school.
+                only accessible to Sarah's, and her school.
               </div>
             </div>
 

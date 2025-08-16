@@ -15,11 +15,14 @@ import {
   X,
   Send,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [showStudentImpactModal, setShowStudentImpactModal] = useState(false);
-
+  const today = new Date();
+  const month = today.toLocaleString("default", { month: "long" });
+  const year = today.getFullYear();
   return (
     <main className="bg-[#F5F7FA] min-h-[800px] py-6 sm:py-8 md:py-12">
       <div className="w-full px-2 sm:px-4">
@@ -35,25 +38,27 @@ const Home = () => {
             ></div>
           </div>
           <div className="flex gap-2 sm:gap-4 mt-4 md:mt-0">
-            <button className="px-6 py-2 rounded-full bg-white text-[#212121] border hover:border-[#1A73E8] shadow-sm flex items-center gap-2">
+            <button className="px-6 py-2 rounded-full bg-white text-[#212121] shadow-sm flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              March 2025
+              {month} {year}
             </button>
-            <button className="px-6 py-2 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600 shadow-sm flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Schedule Session
-            </button>
+            <Link to="/set-availability">
+              <button className="px-6 py-2 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600 shadow-sm flex items-center gap-2 cursor-pointer">
+                <Plus className="w-4 h-4" />
+                Set Availability
+              </button>
+            </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 md:mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 md:mb-8">
           <div
             id="stats-card-1"
             className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-[#212121]">
-                Active Mentees
+                No. of kids mentored
               </h3>
               <span className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
                 <Users className="text-[#1A73E8] w-6 h-6" />
@@ -61,10 +66,10 @@ const Home = () => {
             </div>
             <div className="flex items-end gap-4">
               <span className="text-3xl font-bold text-[#212121]">12</span>
-              <span className="text-green-500 text-sm flex items-center gap-1">
+              {/* <span className="text-green-500 text-sm flex items-center gap-1">
                 <ArrowRight className="w-3 h-3 rotate-[-45deg]" />
                 +3
-              </span>
+              </span> */}
             </div>
           </div>
 
@@ -74,7 +79,7 @@ const Home = () => {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-[#212121]">
-                Hours Taught
+                Hours Mentored
               </h3>
               <span className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
                 <GraduationCap className="text-[#1A73E8] w-6 h-6" />
@@ -82,10 +87,10 @@ const Home = () => {
             </div>
             <div className="flex items-end gap-4">
               <span className="text-3xl font-bold text-[#212121]">48</span>
-              <span className="text-green-500 text-sm flex items-center gap-1">
+              {/* <span className="text-green-500 text-sm flex items-center gap-1">
                 <ArrowRight className="w-3 h-3 rotate-[-45deg]" />
                 +8
-              </span>
+              </span> */}
             </div>
           </div>
 
@@ -111,7 +116,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div
+          {/* <div
             id="stats-card-4"
             className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition-shadow"
           >
@@ -130,7 +135,7 @@ const Home = () => {
                 +5
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -142,9 +147,9 @@ const Home = () => {
               <h2 className="text-xl font-semibold text-[#212121]">
                 Today's Sessions
               </h2>
-              <button className="text-[#1A73E8] hover:underline flex items-center gap-2">
+              {/* <button className="text-[#1A73E8] hover:underline flex items-center gap-2">
                 View Calendar <ArrowRight className="w-4 h-4" />
-              </button>
+              </button> */}
             </div>
             <div className="space-y-4">
               <div className="flex flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-blue-50 border-2 border-blue-100">
@@ -171,12 +176,12 @@ const Home = () => {
                   <button className="px-4 py-2 rounded-full bg-[#1A73E8] text-white text-sm shadow-sm">
                     Join Now
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => setShowNotesModal(true)}
                     className="px-4 py-2 rounded-full border border-[#1A73E8] text-[#1A73E8] text-sm"
                   >
                     View Notes
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
@@ -204,12 +209,12 @@ const Home = () => {
                   <button className="px-4 py-2 rounded-full border border-[#1A73E8] text-[#1A73E8] text-sm">
                     Prepare
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => setShowNotesModal(true)}
                     className="px-4 py-2 rounded-full border border-[#1A73E8] text-[#1A73E8] text-sm"
                   >
                     View Notes
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

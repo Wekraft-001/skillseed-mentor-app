@@ -78,7 +78,7 @@ const Feedback = () => {
             <h1 className="text-3xl font-bold text-[#212121]">
               Mentee Feedback
             </h1>
-            <div className="flex items-center space-x-4">
+            {/* <div className="flex items-center space-x-4">
               <div className="relative">
                 <input
                   type="text"
@@ -94,7 +94,7 @@ const Feedback = () => {
                 <FontAwesomeIcon icon={faFilter} className="mr-2" />
                 Filter
               </button>
-            </div>
+            </div> */}
           </div>
 
           <div
@@ -189,9 +189,9 @@ const Feedback = () => {
                           </span>
                         ))}
                       </div>
-                      <button className="text-[#1A73E8] hover:underline self-start sm:self-center">
+                      {/* <button className="text-[#1A73E8] hover:underline self-start sm:self-center">
                         Reply
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>
