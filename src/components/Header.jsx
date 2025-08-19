@@ -172,7 +172,7 @@ const Header = () => {
         "Content-type": "application/json; charset=UTF-8",
       },
     });
-    console.log(data);
+    // console.log(data);
     return data;
   };
   const {
