@@ -1,350 +1,175 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import { PageMetadata } from "../components/PageMetadata";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faCamera,
-//   faPlus,
-//   faTimes,
-//   faBuilding,
-// } from "@fortawesome/free-solid-svg-icons";
-
-// const ProfileSetup = () => {
-//   const navigate = useNavigate();
-//   return (
-//     <>
-//       <PageMetadata
-//         title="Mentor's Profile Setup"
-//         description="Create & update your profile for easy access to kids"
-//       />
-//       <main className="bg-[#F5F7FA] min-h-[800px] py-8">
-//         <div className="container mx-auto px-6">
-//           {/* Progress Bar */}
-//           {/* <div id="progress-tracker" className="mb-10">
-//             <div className="flex justify-between items-center mb-2">
-//               <span className="text-sm text-[#212121]">
-//                 Profile Setup Progress
-//               </span>
-//               <span className="text-sm text-[#1A73E8]">60% Complete</span>
-//             </div>
-//             <div className="h-2 bg-gray-200 rounded-full">
-//               <div className="w-[60%] h-full bg-[#1A73E8] rounded-full"></div>
-//             </div>
-//           </div> */}
-
-//           {/* Profile Form */}
-//           <div
-//             id="mentor-profile-form"
-//             className="bg-white rounded-2xl p-8 shadow-lg"
-//           >
-//             <h1 className="text-lg md:text-2xl font-semibold text-[#212121] mb-6">
-//               Create Your Mentor Profile
-//             </h1>
-
-//             {/* Personal Info Section */}
-//             <section id="personal-info" className="mb-10">
-//               <h2 className="md:text-xl font-semibold mb-6">
-//                 Personal Information
-//               </h2>
-//               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-//                 <div className="w-32 h-32 relative">
-//                   <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300">
-//                     <FontAwesomeIcon
-//                       icon={faCamera}
-//                       className="text-gray-400 text-2xl"
-//                     />
-//                   </div>
-//                   <button className="absolute bottom-0 right-0 bg-[#1A73E8] p-2 rounded-full text-white">
-//                     <FontAwesomeIcon icon={faPlus} />
-//                   </button>
-//                 </div>
-//                 <div className="flex-1 space-y-4">
-//                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-//                     <div>
-//                       <label className="block text-sm font-medium mb-2">
-//                         Full Name
-//                       </label>
-//                       <input
-//                         type="text"
-//                         className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-//                         placeholder="Enter your full name"
-//                       />
-//                     </div>
-//                     <div>
-//                       <label className="block text-sm font-medium mb-2">
-//                         Professional Title
-//                       </label>
-//                       <input
-//                         type="text"
-//                         className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-//                         placeholder="e.g., Senior Software Engineer"
-//                       />
-//                     </div>
-//                   </div>
-//                   <div>
-//                     <label className="block text-sm font-medium mb-2">
-//                       Bio (100-150 words)
-//                     </label>
-//                     <textarea
-//                       className="w-full px-4 py-3 rounded-xl border focus:border-[#1A73E8] outline-none h-32"
-//                       placeholder="Tell us about yourself and your expertise..."
-//                     ></textarea>
-//                   </div>
-//                 </div>
-//               </div>
-//             </section>
-
-//             {/* Expertise Section */}
-//             <section id="expertise" className="mb-10">
-//               <h2 className="md:text-xl font-semibold mb-6">Areas of Expertise</h2>
-//               <div className="space-y-4">
-//                 <div className="flex flex-wrap gap-2">
-//                   <span className="px-4 py-2 bg-blue-50 text-[#1A73E8] rounded-full flex items-center">
-//                     A.I. Engineer
-//                     <button className="ml-2 text-sm">
-//                       <FontAwesomeIcon icon={faTimes} />
-//                     </button>
-//                   </span>
-//                   <span className="px-4 py-2 bg-blue-50 text-[#1A73E8] rounded-full flex items-center">
-//                     Machine Learning
-//                     <button className="ml-2 text-sm">
-//                       <FontAwesomeIcon icon={faTimes} />
-//                     </button>
-//                   </span>
-//                   <button className="px-4 py-2 border border-dashed border-gray-300 rounded-full text-gray-500 hover:border-[#1A73E8] hover:text-[#1A73E8]">
-//                     + Add Tag
-//                   </button>
-//                 </div>
-//               </div>
-//             </section>
-
-//             {/* Experience Section */}
-//             <section id="experience" className="mb-10">
-//               <h2 className="md:text-xl font-semibold mb-6">
-//                 Experience & Education
-//               </h2>
-//               <div className="space-y-6">
-//                 <div className="p-4 border rounded-xl bg-gray-50">
-//                   <div className="flex justify-between items-start mb-4">
-//                     <div>
-//                       <h3 className="font-medium">Work Experience</h3>
-//                       <p className="text-sm text-gray-600">
-//                         Add your relevant work experience
-//                       </p>
-//                     </div>
-//                     <button className="bg-[#1A73E8] text-white md:px-4 py-2 rounded-full text-sm">
-//                       <FontAwesomeIcon icon={faPlus} className="mr-2" />
-//                       Add Experience
-//                     </button>
-//                   </div>
-//                   <div>
-//                     <div className="flex items-start gap-4">
-//                       <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-//                         <FontAwesomeIcon
-//                           icon={faBuilding}
-//                           className="text-gray-400"
-//                         />
-//                       </div>
-//                       <div>
-//                         <input
-//                           type="text"
-//                           className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none mb-2"
-//                           placeholder="Company Name"
-//                         />
-//                         <input
-//                           type="text"
-//                           className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none mt-3"
-//                           placeholder="Position"
-//                         />
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-
-//                 <div className="p-6 border rounded-xl bg-gray-50">
-//                   <div className="flex justify-between items-start mb-4">
-//                     <div>
-//                       <h3 className="font-medium">Education</h3>
-//                       <p className="text-sm text-gray-600">
-//                         Add your educational background
-//                       </p>
-//                     </div>
-//                     <button className="bg-[#1A73E8] text-white md:px-4 py-2 rounded-full text-sm">
-//                       <FontAwesomeIcon icon={faPlus} className="mr-2" />
-//                       Add Education
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             </section>
-
-//             {/* Availability Section */}
-//             {/* <section id="availability" className="mb-10">
-//               <h2 className="text-xl font-semibold mb-6">
-//                 Set Your Availability
-//               </h2>
-//               <div className="grid grid-cols-7 gap-4 mb-6">
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-blue-50 text-[#1A73E8] font-medium hover:bg-[#1A73E8] hover:text-white">
-//                     Mon
-//                   </button>
-//                 </div>
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-blue-50 text-[#1A73E8] font-medium hover:bg-[#1A73E8] hover:text-white">
-//                     Tue
-//                   </button>
-//                 </div>
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-[#1A73E8] text-white font-medium">
-//                     Wed
-//                   </button>
-//                 </div>
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-blue-50 text-[#1A73E8] font-medium hover:bg-[#1A73E8] hover:text-white">
-//                     Thu
-//                   </button>
-//                 </div>
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-[#1A73E8] text-white font-medium">
-//                     Fri
-//                   </button>
-//                 </div>
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-gray-100 text-gray-400">
-//                     Sat
-//                   </button>
-//                 </div>
-//                 <div className="text-center">
-//                   <button className="w-12 h-12 rounded-full bg-gray-100 text-gray-400">
-//                     Sun
-//                   </button>
-//                 </div>
-//               </div>
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div>
-//                   <label className="block text-sm font-medium mb-2">
-//                     Start Time
-//                   </label>
-//                   <input
-//                     type="time"
-//                     className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-//                   />
-//                 </div>
-//                 <div>
-//                   <label className="block text-sm font-medium mb-2">
-//                     End Time
-//                   </label>
-//                   <input
-//                     type="time"
-//                     className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-//                   />
-//                 </div>
-//               </div>
-//             </section> */}
-
-//             {/* Submit Button */}
-//             <div id="form-actions" className="flex justify-end space-x-4">
-//               {/* <button className="px-6 py-2 rounded-full border border-[#1A73E8] text-[#1A73E8] hover:bg-blue-50">
-//                 Save as Draft
-//               </button> */}
-//               <button
-//                 onClick={() => navigate("/verification")}
-//                 className="px-6 py-2 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600"
-//               >
-//                 Complete Profile
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </main>
-//     </>
-//   );
-// };
-
-// export default ProfileSetup;
-
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PageMetadata } from "../components/PageMetadata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCamera,
-  faPlus,
-  faTimes,
-  faBuilding,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
+import { toast, ToastContainer } from "react-toastify";
 
 const languageOptions = [
-  { value: "english", label: "English" },
-  { value: "french", label: "French" },
-  { value: "swahili", label: "Swahili" },
-  { value: "spanish", label: "Spanish" },
-  { value: "german", label: "German" },
+  { value: "English", label: "English" },
+  { value: "French", label: "French" },
+  { value: "Swahili", label: "Swahili" },
+  { value: "Spanish", label: "Spanish" },
+  { value: "German", label: "German" },
 ];
 
 const ProfileSetup = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("mentorToken");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [expertise, setExpertise] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [languages, setLanguages] = useState([]);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [dirty, setDirty] = useState(false);
 
   const [profile, setProfile] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
     fullName: "",
     title: "",
     bio: "",
-    expertise: [],
     experience: "",
     education: "",
     linkedin: "",
-    languages: "",
+    city: "",
+    country: "",
   });
 
-  // Add expertise tag
-  const handleAddExpertise = (e) => {
-    e.preventDefault();
-    if (inputValue.trim() !== "" && !expertise.includes(inputValue)) {
-      setExpertise([...expertise, inputValue.trim()]);
-      setInputValue("");
-    }
+  const fetchUserDetails = async () => {
+    const { data } = await axios.get(`${apiURL}/mentor/dashboard/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
   };
 
-  // Remove expertise tag
-  const handleRemoveExpertise = (tag) => {
-    setExpertise(expertise.filter((item) => item !== tag));
-  };
-
-  // Toggle language select
-  const handleLanguageChange = (selectedOptions) => {
-    setLanguages(selectedOptions || []);
-  };
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["profile-data"],
+    queryFn: fetchUserDetails,
+    enabled: !!token,
+    staleTime: 5 * 60 * 1000,
+  });
 
   useEffect(() => {
-    // Simulated fetch (replace with API call)
-    const fetchProfile = async () => {
-      const response = await fetch("/api/mentor/profile"); // ✅ adjust endpoint
-      const data = await response.json();
-      setProfile({
-        fullName: data.fullName,
-        title: data.title || "",
-        bio: data.bio || "",
-        expertise: data.expertise || [],
-        experience: data.experience || "",
-        education: data.education || "",
-        linkedin: data.linkedin || "",
-        languages: data.languages || "",
-      });
+    if (!userData) return;
+
+    setProfile({
+      firstName: userData.firstName || "",
+      lastName: userData.lastName || "",
+      email: userData.email || "",
+      fullName: `${userData.firstName || ""} ${userData.lastName || ""}`.trim(),
+      title: userData.specialty || "",
+      bio: userData.biography || "",
+      experience: String(userData.yearsOfExperience ?? ""),
+      education: userData.education || "",
+      linkedin: userData.linkedin || "",
+      city: userData.city || "",
+      country: userData.country || "",
+    });
+
+    setExpertise(
+      Array.isArray(userData.areasOfExpertise) ? userData.areasOfExpertise : []
+    );
+
+    // Map backend languages to react-select options; include unknowns gracefully
+    const toOption = (lang) => {
+      const known = languageOptions.find(
+        (o) => o.value.toLowerCase() === String(lang).toLowerCase()
+      );
+      return known || { value: String(lang), label: String(lang) };
     };
+    setLanguages(
+      Array.isArray(userData.languages) ? userData.languages.map(toOption) : []
+    );
 
-    fetchProfile();
-  }, []);
+    setPreview(userData.image || null);
+  }, [userData]);
 
+  // expertise handlers
+  const handleAddExpertise = (e) => {
+    e.preventDefault();
+    const val = inputValue.trim();
+    if (!val) return;
+    if (!expertise.includes(val)) setExpertise((prev) => [...prev, val]);
+    setInputValue("");
+  };
+  const handleRemoveExpertise = (tag) =>
+    setExpertise((prev) => prev.filter((t) => t !== tag));
+
+  // language select
+  const handleLanguageChange = (selected) => {
+    setLanguages(selected || []);
+  };
+
+  // text inputs
   const handleChange = (field, value) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
   };
 
+  // image handler
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setImage(file);
+    if (file) setPreview(URL.createObjectURL(file));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("firstName", profile.firstName);
+      formData.append("lastName", profile.lastName);
+      formData.append("specialty", profile.title);
+      formData.append("biography", profile.bio);
+      formData.append("yearsOfExperience", profile.experience);
+      formData.append("education", profile.education);
+      formData.append("linkedin", profile.linkedin);
+
+      expertise.forEach((item) => formData.append("areasOfExpertise[]", item));
+      languages.forEach((opt) => formData.append("languages[]", opt.value));
+
+      if (image) formData.append("photo", image);
+
+      await axios.patch(`${apiURL}/mentor/dashboard/update-profile`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // optional: refresh cache then navigate
+      await queryClient.invalidateQueries({ queryKey: ["profile-data"] });
+      // navigate("/verification");
+      toast.success("Profile Successfully updated");
+      setDirty(false);
+    } catch (err) {
+      console.error("Update failed:", err);
+      toast.error("Failed to update profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (isLoading) return null;
+  if (isError) {
+    console.error(error);
+  }
+
   return (
     <>
+      <ToastContainer />
       <PageMetadata
         title="Mentor's Profile Setup"
         description="Complete your mentor profile for kids to connect with you"
@@ -357,22 +182,37 @@ const ProfileSetup = () => {
             </h1>
 
             {/* Personal Info */}
-            <section id="personal-info" className="mb-10">
+            <section className="mb-10">
               <h2 className="md:text-xl font-semibold mb-6">
                 Personal Information
               </h2>
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="w-32 h-32 relative">
-                  <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300">
-                    <FontAwesomeIcon
-                      icon={faCamera}
-                      className="text-gray-400 text-2xl"
-                    />
+                  <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
+                    {preview ? (
+                      <img
+                        src={preview}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faCamera}
+                        className="text-gray-400 text-2xl"
+                      />
+                    )}
                   </div>
-                  <button className="absolute bottom-0 right-0 bg-[#1A73E8] p-2 rounded-full text-white">
+                  <label className="absolute bottom-0 right-0 bg-[#1A73E8] p-2 rounded-full text-white cursor-pointer">
                     <FontAwesomeIcon icon={faPlus} />
-                  </button>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
                 </div>
+
                 <div className="flex-1 space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
@@ -383,7 +223,7 @@ const ProfileSetup = () => {
                         type="text"
                         value={profile.fullName}
                         disabled
-                        className="w-full px-4 py-2 rounded-full border bg-gray-100 text-gray-500"
+                        className="w-full px-4 py-2 rounded-full border bg-gray-100 text-gray-500 cursor-not-allowed"
                       />
                     </div>
                     <div>
@@ -395,10 +235,11 @@ const ProfileSetup = () => {
                         value={profile.title}
                         onChange={(e) => handleChange("title", e.target.value)}
                         className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-                        placeholder="e.g., Senior Software Engineer"
+                        placeholder="e.g., Data Analyst"
                       />
                     </div>
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium mb-2">
                       Bio (100-150 words)
@@ -407,57 +248,54 @@ const ProfileSetup = () => {
                       value={profile.bio}
                       onChange={(e) => handleChange("bio", e.target.value)}
                       className="w-full px-4 py-3 rounded-xl border focus:border-[#1A73E8] outline-none h-32"
-                      placeholder="Tell us about yourself and your expertise..."
-                    ></textarea>
+                      placeholder="Tell us about yourself..."
+                    />
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Expertise */}
-            <section id="expertise" className="mb-10">
+            <section className="mb-10">
               <h2 className="md:text-xl font-semibold mb-6">
                 Areas of Expertise
               </h2>
-              <div>
-                {/* <h2 className="font-semibold mb-2">Areas of Expertise</h2> */}
-                <form onSubmit={handleAddExpertise} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Add expertise..."
-                    className="border px-3 py-2 rounded-lg w-full"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 rounded-lg"
+              <form onSubmit={handleAddExpertise} className="flex gap-2">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Add expertise..."
+                  className="border px-3 py-2 rounded-lg w-full"
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 rounded-lg"
+                >
+                  Add
+                </button>
+              </form>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {expertise.map((tag, idx) => (
+                  <span
+                    key={`${tag}-${idx}`}
+                    className="px-4 py-2 bg-blue-50 text-[#1A73E8] rounded-full flex items-center"
                   >
-                    Add
-                  </button>
-                </form>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {expertise.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="px-4 py-2 bg-blue-50 text-[#1A73E8] rounded-full flex items-center"
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveExpertise(tag)}
+                      className="ml-2 text-sm"
                     >
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveExpertise(tag)}
-                        className="ml-2 text-sm"
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  </span>
+                ))}
               </div>
             </section>
 
             {/* Experience & Education */}
-            <section id="experience" className="mb-10">
+            <section className="mb-10">
               <h2 className="md:text-xl font-semibold mb-6">
                 Experience & Education
               </h2>
@@ -471,7 +309,6 @@ const ProfileSetup = () => {
                     value={profile.experience}
                     onChange={(e) => handleChange("experience", e.target.value)}
                     className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-                    placeholder="6"
                   />
                 </div>
 
@@ -484,7 +321,6 @@ const ProfileSetup = () => {
                     value={profile.education}
                     onChange={(e) => handleChange("education", e.target.value)}
                     className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-                    placeholder="e.g., MSc Computer Science"
                   />
                 </div>
 
@@ -497,7 +333,6 @@ const ProfileSetup = () => {
                     value={profile.linkedin}
                     onChange={(e) => handleChange("linkedin", e.target.value)}
                     className="w-full px-4 py-2 rounded-full border focus:border-[#1A73E8] outline-none"
-                    placeholder="https://linkedin.com/in/username"
                   />
                 </div>
 
@@ -519,10 +354,37 @@ const ProfileSetup = () => {
             {/* Submit */}
             <div className="flex justify-end">
               <button
-                onClick={() => navigate("/verification")}
-                className="px-6 py-2 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600"
+                onClick={handleSubmit}
+                disabled={loading || !dirty}
+                className={`px-6 py-2 rounded-full text-white flex items-center justify-center gap-2 ${
+                  loading || !dirty
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#1A73E8] hover:bg-blue-600"
+                }`}
               >
-                Complete Profile
+                {loading && (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
+                  </svg>
+                )}
+                {loading ? "Saving..." : "Complete Profile"}
               </button>
             </div>
           </div>

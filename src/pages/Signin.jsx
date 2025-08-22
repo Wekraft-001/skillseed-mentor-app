@@ -35,7 +35,7 @@ const Signin = () => {
 
     try {
       const response = await axios.post(url, loginDetails);
-      console.log(response, "response");
+      // console.log(response, "response");
 
       const accessToken = response.data.access_token;
       localStorage.setItem("mentorToken", accessToken);
