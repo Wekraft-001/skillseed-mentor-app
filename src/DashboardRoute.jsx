@@ -5,6 +5,7 @@ import { SidebarProvider } from "./context/SidebarContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProfileSetup from "./pages/ProfileSetup";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import SafetyGuidelines from "./pages/SafetyGuidelines";
 import UploadCredentials from "./pages/UploadCredentials";
@@ -16,6 +17,7 @@ import Messages from "./pages/Messages";
 import Reports from "./pages/Reports";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Resources from "./pages/Resources";
+import MenteeNoteDetails from "./pages/NoteDetails";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Layout />}>
               <Route path="home" element={<Home />} />
               <Route path="profile-setup" element={<ProfileSetup />} />
+              <Route path="profile" element={<Profile />} />
               <Route path="/safety-guidelines" element={<SafetyGuidelines />} />
               <Route
                 path="/upload-credentials"
@@ -37,6 +40,10 @@ const App = () => (
               <Route path="/feedback" element={<Feedback />} />
               <Route path="/schedule-session" element={<ScheduleSession />} />
               <Route path="/notes" element={<Notes />} />
+              <Route
+                path="//mentee-notes/:id"
+                element={<MenteeNoteDetails />}
+              />
               <Route path="/messages" element={<Messages />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/resources" element={<Resources />} />

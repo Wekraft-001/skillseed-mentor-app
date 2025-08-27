@@ -1,309 +1,425 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import {
-  faArrowLeft,
-  faShareNodes,
-  faPlus,
-  faCalendarDay,
-  faClock,
-  faStar,
-  faStarHalfAlt,
-  faBookOpen,
-  faCheckCircle,
-  faPencilAlt,
-  faTrashAlt,
-  faLightbulb,
-  faExclamationTriangle,
-  faTrophy,
-  faArrowUp,
-  faEye,
-  faLock,
-  faInfoCircle,
-  faUserGraduate,
-} from "@fortawesome/free-solid-svg-icons";
+  Search,
+  Plus,
+  Users,
+  FileText,
+  Star,
+  Calendar,
+  Heart,
+  Calculator,
+  Book,
+  Beaker,
+  Eye,
+} from "lucide-react";
+import { PageMetadata } from "../components/PageMetadata";
 import { useNavigate } from "react-router-dom";
+import AddNoteModal from "../components/modals/AddNoteModal";
 
 const Notes = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showAddNote, setShowAddNote] = useState(false);
   const navigate = useNavigate();
 
-  const studentInfo = {
-    name: "Sarah Johnson",
-    avatar:
-      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=facearea&w=128&q=80&facepad=2",
-    subject: "Mathematics",
-    grade: "Grade 4",
-    sessionDate: "30 May 2025",
-    sessionTime: "2:00 PM - 3:00 PM",
-    avgReview: 4.8,
-    stars: [faStar, faStar, faStar, faStar, faStarHalfAlt],
-  };
-
-  const notesData = [
+  const menteeData = [
     {
-      id: "note-card-1",
-      icon: faBookOpen,
-      iconBg: "bg-[#1A73E8]",
-      iconRing: "ring-[#FFC107]",
-      title: "Multiplication Tables Practice",
-      status: "Completed",
-      statusIcon: faCheckCircle,
-      statusColor: "bg-green-100 text-green-700",
-      content:
-        "Sarah was enthusiastic and eager to learn. She solved 9 out of 10 multiplication problems correctly and even helped her friend with one of the exercises. Her focus and curiosity stood out during this session.",
+      id: "emma-johnson",
+      name: "Emma Johnson",
+      avatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg",
+      grade: "Grade 3",
+      subject: "Creative Arts",
+      tags: ["Drawing", "Painting"],
+      lastSession: "March 14, 2025",
+      latestNote:
+        "Emma showed excellent progress in color mixing today. She created a beautiful landscape painting and demonstrated good understanding of warm and cool colors...",
+      noteDate: "March 14, 2025 • 4:30 PM",
+      icon: Heart,
+      color: "pink",
     },
     {
-      id: "note-card-2",
-      icon: faLightbulb,
-      iconBg: "bg-[#FFC107]",
-      iconRing: "ring-[#1A73E8]",
-      title: "Areas for Improvement",
-      status: "Action Needed",
-      statusIcon: faExclamationTriangle,
-      statusColor: "bg-yellow-100 text-yellow-800",
-      content:
-        "Sarah sometimes gets confused with 7 and 8 times tables. Recommend more colorful flashcards and 5-minute daily practice to boost confidence and retention.",
+      id: "sophie-chen",
+      name: "Sophie Chen",
+      avatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg",
+      grade: "Grade 4",
+      subject: "Mathematics",
+      tags: ["Multiplication", "Division"],
+      lastSession: "March 15, 2025",
+      latestNote:
+        "Sophie mastered the 7 and 8 times tables today! She's ready to move on to 9s. Her confidence in math is growing significantly...",
+      noteDate: "March 15, 2025 • 2:15 PM",
+      icon: Calculator,
+      color: "green",
     },
     {
-      id: "note-card-3",
-      icon: faTrophy,
-      iconBg: "bg-green-400",
-      iconRing: "ring-[#FFC107]",
-      title: "Recommendations",
-      status: "Progress",
-      statusIcon: faArrowUp,
-      statusColor: "bg-blue-100 text-blue-700",
-      content:
-        "Play multiplication bingo and reward correct answers with stickers. Encourage Sarah to create her own multiplication storybook for extra fun.",
+      id: "lily-martinez",
+      name: "Lily Martinez",
+      avatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg",
+      grade: "Grade 2",
+      subject: "English Literature",
+      tags: ["Reading", "Vocabulary"],
+      lastSession: "March 13, 2025",
+      latestNote:
+        'Lily read "The Little Red Hen" fluently today. She\'s improving her comprehension skills and can answer questions about the story...',
+      noteDate: "March 13, 2025 • 4:45 PM",
+      icon: Book,
+      color: "purple",
+    },
+    {
+      id: "max-thompson",
+      name: "Max Thompson",
+      avatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-7.jpg",
+      grade: "Grade 5",
+      subject: "Science",
+      tags: ["Physics", "Biology"],
+      lastSession: "March 14, 2025",
+      latestNote:
+        "Max showed great curiosity about the solar system. He asked insightful questions about planet sizes and distances. Recommend space documentaries...",
+      noteDate: "March 14, 2025 • 1:30 PM",
+      icon: Beaker,
+      color: "blue",
     },
   ];
 
+  const filteredMentees = menteeData.filter(
+    (mentee) =>
+      mentee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      mentee.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      mentee.tags.some((tag) =>
+        tag.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+  );
+
+  const handleViewAllNotes = (menteeId) => {
+    navigate(`/mentee-notes/${menteeId}`);
+  };
+
+  const getColorClasses = (color) => {
+    const colorMap = {
+      pink: {
+        bg: "bg-pink-50",
+        border: "border-pink-100",
+        button: "bg-pink-500 hover:bg-pink-600",
+        buttonBorder: "border-pink-500 text-pink-600 hover:bg-pink-50",
+        iconBg: "bg-pink-400",
+        tag1: "bg-pink-100 text-pink-700",
+        tag2: "bg-purple-100 text-purple-700",
+      },
+      green: {
+        bg: "bg-green-50",
+        border: "border-green-100",
+        button: "bg-green-500 hover:bg-green-600",
+        buttonBorder: "border-green-500 text-green-600 hover:bg-green-50",
+        iconBg: "bg-green-500",
+        tag1: "bg-green-100 text-green-700",
+        tag2: "bg-blue-100 text-blue-700",
+      },
+      purple: {
+        bg: "bg-purple-50",
+        border: "border-purple-100",
+        button: "bg-purple-500 hover:bg-purple-600",
+        buttonBorder: "border-purple-500 text-purple-600 hover:bg-purple-50",
+        iconBg: "bg-purple-500",
+        tag1: "bg-purple-100 text-purple-700",
+        tag2: "bg-yellow-100 text-yellow-700",
+      },
+      blue: {
+        bg: "bg-blue-50",
+        border: "border-blue-100",
+        button: "bg-blue-500 hover:bg-blue-600",
+        buttonBorder: "border-blue-500 text-blue-600 hover:bg-blue-50",
+        iconBg: "bg-blue-500",
+        tag1: "bg-blue-100 text-blue-700",
+        tag2: "bg-green-100 text-green-700",
+      },
+    };
+    return colorMap[color] || colorMap.blue;
+  };
+
   return (
-    <main
-      id="view-notes-main"
-      className="relative min-h-[900px] pb-20 pt-12 bg-[#F5F7FA]"
-    >
-      {/* Floating bubble decorations */}
-      <div className="absolute -top-10 -left-12 z-0">
-        <div className="w-40 h-40 bg-[#FFC107] rounded-full opacity-20 blur-xl"></div>
-      </div>
-      <div className="absolute top-24 left-16 z-0">
-        <div className="w-20 h-20 bg-[#1A73E8] rounded-full opacity-20 blur-md"></div>
-      </div>
-      <div className="absolute top-1/2 left-0 z-0">
-        <div className="w-14 h-14 bg-[#1A73E8] rounded-full opacity-10 blur"></div>
-      </div>
-      <div className="absolute bottom-36 right-16 z-0">
-        <div className="w-24 h-24 bg-[#FFC107] rounded-full opacity-10 blur"></div>
-      </div>
-      <div className="absolute bottom-0 right-0 z-0">
-        <div className="w-36 h-36 bg-[#1A73E8] rounded-full opacity-10 blur-xl"></div>
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Page Heading */}
-        <div
-          id="view-notes-header"
-          className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 sm:gap-0"
-        >
-          <div className="flex items-center gap-4">
-            <button
-              className="rounded-full bg-white shadow-md px-4 py-2 text-[#1A73E8] hover:bg-blue-50 transition-all"
-              onClick={() => navigate(-1)}
-            >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </button>
-            <h1
-              className="text-3xl font-bold text-[#212121] leading-tight"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Session Notes
-            </h1>
-            <div className="w-8 h-8 bg-[#FFC107] rounded-full opacity-25 animate-bounce"></div>
-            <div
-              className="w-6 h-6 bg-[#1A73E8] rounded-full opacity-25 animate-bounce"
-              style={{ animationDelay: "180ms" }}
-            ></div>
-          </div>
-          <div className="flex gap-3">
-            <button className="rounded-full px-5 py-2 bg-[#1A73E8] text-white font-semibold shadow-md hover:bg-blue-600 transition-all flex items-center gap-2">
-              <FontAwesomeIcon icon={faPlus} /> Add Note
-            </button>
-          </div>
-        </div>
-
-        {/* Student Info Card */}
-        <div
-          id="student-info-card"
-          className="p-6 rounded-3xl bg-white shadow mb-8 flex flex-col md:flex-row items-center gap-8 border border-gray-100"
-        >
-          <img
-            src={studentInfo.avatar}
-            alt={`${studentInfo.name} Avatar`}
-            className="w-24 h-24 rounded-full border-4 border-[#1A73E8] object-cover"
-          />
-          <div className="flex-1 min-w-0 text-center md:text-left">
-            <h3 className="text-2xl font-bold text-[#212121]">
-              {studentInfo.name}
-            </h3>
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-2">
-              <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-xs font-semibold">
-                {studentInfo.subject}
-              </span>
-              <span className="bg-yellow-100 text-yellow-800 rounded-full px-3 py-1 text-xs font-semibold">
-                {studentInfo.grade}
-              </span>
-              <span className="bg-pink-100 text-pink-600 rounded-full px-3 py-1 text-xs font-semibold flex items-center gap-1">
-                <FontAwesomeIcon icon={faCalendarDay} />{" "}
-                {studentInfo.sessionDate}
-              </span>
+    <>
+      <PageMetadata
+        title="My Mentee Notes | SkillSeed"
+        description="Manage and view notes for all your mentees"
+      />
+      <main className="bg-[#F5F7FA] py-12">
+        <div className="container mx-auto px-6">
+          {/* Page Header */}
+          <div
+            id="page-header"
+            className="flex justify-between items-center mb-8"
+          >
+            <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-bold text-[#212121]">
+                My Mentee Notes
+              </h1>
+              <div className="w-8 h-8 bg-[#FFC107] rounded-full animate-bounce opacity-20"></div>
+              <div
+                className="w-6 h-6 bg-[#1A73E8] rounded-full animate-bounce opacity-20"
+                style={{ animationDelay: "200ms" }}
+              ></div>
+              <div
+                className="w-4 h-4 bg-pink-400 rounded-full animate-bounce opacity-20"
+                style={{ animationDelay: "400ms" }}
+              ></div>
             </div>
-            <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
-              <FontAwesomeIcon icon={faClock} className="text-[#1A73E8]" />
-              <span className="text-gray-600 text-sm font-medium">
-                {studentInfo.sessionTime}
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2 mt-4 md:mt-0">
-            <div className="flex gap-1 mb-1">
-              {studentInfo.stars.map((starIcon, index) => (
-                <FontAwesomeIcon
-                  key={index}
-                  icon={starIcon}
-                  className="text-[#FFC107]"
+            <div className="flex gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search notes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="px-6 py-3 pl-10 rounded-full bg-white text-[#212121] border hover:border-[#1A73E8] shadow-sm focus:outline-none focus:border-[#1A73E8]"
                 />
-              ))}
+              </div>
+              <button
+                onClick={() => setShowAddNote(true)}
+                className="px-6 py-3 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600 shadow-sm"
+              >
+                <Plus className="w-4 h-4 mr-2 inline" />
+                Add New Note
+              </button>
             </div>
-            <span className="text-lg font-bold text-[#212121]">
-              {studentInfo.avgReview.toFixed(1)}
-            </span>
-            <span className="text-xs text-gray-400 font-semibold">
-              Avg. Review
-            </span>
           </div>
-        </div>
 
-        {/* Notes Timeline */}
-        <section
-          id="notes-timeline-section"
-          className="grid grid-cols-12 gap-8 relative"
-        >
-          <div className="col-span-12 md:col-span-8">
-            <div id="notes-timeline" className="relative">
-              <div className="absolute left-5 top-0 bottom-0 w-2 bg-gradient-to-b from-[#1A73E8]/20 to-[#FFC107]/10 rounded-full"></div>
-              <div className="space-y-10 pl-16">
-                {notesData.map((note) => (
-                  <div
-                    key={note.id}
-                    id={note.id}
-                    className="relative flex gap-5"
-                  >
-                    <div className="absolute -left-[2.55rem] top-2.5">
-                      <div
-                        className={`w-10 h-10 ${note.iconBg} rounded-full flex items-center justify-center shadow-md border-4 border-white ring-2 ${note.iconRing}`}
-                      >
-                        <FontAwesomeIcon
-                          icon={note.icon}
-                          className="text-white text-xl"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-1 bg-white rounded-2xl shadow p-6 border border-gray-100">
-                      <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-[#212121] text-lg">
-                          {note.title}
-                        </h4>
-                        <span
-                          className={`text-xs ${note.statusColor} rounded-full px-3 py-1 font-semibold flex items-center gap-1`}
-                        >
-                          <FontAwesomeIcon icon={note.statusIcon} />{" "}
-                          {note.status}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 my-2">{note.content}</p>
-                      <div className="flex items-center gap-2 mt-4">
-                        <button className="rounded-full px-4 py-2 bg-[#1A73E8] text-white text-sm font-semibold flex items-center gap-2 shadow hover:bg-blue-600 transition-all">
-                          <FontAwesomeIcon icon={faPencilAlt} /> Edit
-                        </button>
-                        <button className="rounded-full px-4 py-2 bg-white text-[#1A73E8] border border-[#1A73E8] text-sm font-semibold flex items-center gap-2 hover:bg-blue-50 transition-all">
-                          <FontAwesomeIcon icon={faTrashAlt} /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {/* Add New Note Bubble Button */}
-                <div id="add-note-bubble" className="flex justify-center mt-10">
-                  <button className="w-16 h-16 rounded-full bg-[#1A73E8] flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white hover:bg-[#FFC107] hover:text-[#212121] transition-all duration-200 ease-in-out">
-                    <FontAwesomeIcon icon={faPlus} />
-                  </button>
+          {/* Stats Cards */}
+          <div
+            id="stats-section"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+          >
+            <div className="bg-white p-6 rounded-3xl shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
+                  <Users className="text-pink-500 w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-[#212121]">
+                    {filteredMentees.length}
+                  </h3>
+                  <p className="text-gray-600">
+                    {searchQuery ? "Matching Mentees" : "Active Mentees"}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-3xl shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                  <FileText className="text-[#1A73E8] w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-[#212121]">47</h3>
+                  <p className="text-gray-600">Total Notes</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-3xl shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <Star className="text-[#FFC107] w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-[#212121]">8</h3>
+                  <p className="text-gray-600">This Week</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Parent/School Visibility & Quick Info */}
-          <aside id="quick-info-card" className="col-span-12 md:col-span-4">
-            <div className="bg-white rounded-3xl shadow p-6 border border-gray-100 mb-8">
-              <h3 className="font-bold text-[#212121] mb-2 text-lg flex items-center gap-2">
-                <FontAwesomeIcon icon={faEye} className="text-[#1A73E8]" />{" "}
-                Visibility
-              </h3>
-              <ul className="space-y-3 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="text-green-400"
-                  />
-                  <span>Visible to Parent</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="text-green-400"
-                  />
-                  <span>Visible to School</span>
-                </li>
-              </ul>
-              <div className="mt-6 text-sm text-gray-400">
-                <FontAwesomeIcon icon={faLock} className="mr-1" /> Notes are
-                only accessible to Sarah's, and her school.
-              </div>
+          {/* Search Results */}
+          {searchQuery && (
+            <div className="mb-6">
+              <p className="text-gray-600">
+                {filteredMentees.length} result
+                {filteredMentees.length !== 1 ? "s" : ""} found for "
+                {searchQuery}"
+              </p>
             </div>
+          )}
 
-            <div className="bg-white rounded-3xl shadow p-6 border border-gray-100">
-              <h3 className="font-bold text-[#212121] mb-2 text-lg flex items-center gap-2">
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  className="text-[#FFC107]"
-                />{" "}
-                Session Details
+          {/* Mentee Cards Grid */}
+          <div
+            id="mentees-grid"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            {filteredMentees.map((mentee) => {
+              const colors = getColorClasses(mentee.color);
+              const IconComponent = mentee.icon;
+
+              return (
+                <div
+                  key={mentee.id}
+                  className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition-all"
+                >
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="relative">
+                      <img
+                        src={mentee.avatar}
+                        alt={mentee.name}
+                        className={`w-20 h-20 rounded-full border-4 ${colors.border}`}
+                      />
+                      <div
+                        className={`absolute -top-2 -right-2 w-8 h-8 ${colors.iconBg} rounded-full flex items-center justify-center`}
+                      >
+                        <IconComponent className="text-white w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#212121]">
+                        {mentee.name}
+                      </h3>
+                      <p className="text-gray-600 mb-2">
+                        {mentee.grade} • {mentee.subject}
+                      </p>
+                      <div className="flex gap-2 mb-3">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${colors.tag1}`}
+                        >
+                          {mentee.tags[0]}
+                        </span>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${colors.tag2}`}
+                        >
+                          {mentee.tags[1]}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Calendar className="text-[#FFC107] w-4 h-4" />
+                        <span>Last session: {mentee.lastSession}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`${colors.bg} p-4 rounded-2xl mb-4`}>
+                    <h4 className="font-semibold text-sm text-[#212121] mb-2">
+                      Latest Note:
+                    </h4>
+                    <p className="text-sm text-gray-600 mb-3">
+                      {mentee.latestNote}
+                    </p>
+                    <div className="text-xs text-gray-500">
+                      {mentee.noteDate}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowAddNote(true)}
+                      className={`flex-1 px-4 py-3 rounded-full ${colors.button} text-white shadow-sm font-medium`}
+                    >
+                      <Plus className="w-4 h-4 mr-2 inline" />
+                      Add Note
+                    </button>
+                    <button
+                      onClick={() => handleViewAllNotes(mentee.id)}
+                      className={`flex-1 px-4 py-3 rounded-full border-2 ${colors.buttonBorder} font-medium`}
+                    >
+                      <Eye className="w-4 h-4 mr-2 inline" />
+                      View All Notes
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* No Results */}
+          {filteredMentees.length === 0 && searchQuery && (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-bold text-[#212121] mb-2">
+                No mentees found
               </h3>
-              <ul className="text-gray-700 space-y-2">
-                <li className="flex items-center gap-2">
-                  <FontAwesomeIcon icon={faClock} className="text-[#1A73E8]" />
-                  <span>Duration: 1 hour</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faCalendarDay}
-                    className="text-[#FFC107]"
-                  />
-                  <span>Date: 30 May 2025</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faUserGraduate}
-                    className="text-green-400"
-                  />
-                  <span>Mentor: Dr. James Wilson</span>
-                </li>
-              </ul>
+              <p className="text-gray-600">
+                Try searching with different keywords or check your spelling.
+              </p>
             </div>
-          </aside>
-        </section>
-      </div>
-    </main>
+          )}
+
+          {/* Load More Button */}
+          {!searchQuery && filteredMentees.length > 0 && (
+            <div id="load-more" className="text-center mt-8">
+              <button className="px-8 py-3 rounded-full bg-white text-[#1A73E8] border-2 border-[#1A73E8] hover:bg-blue-50 shadow-sm font-medium">
+                <Users className="w-4 h-4 mr-2 inline" />
+                Show More Mentees
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Floating Bubbles Decoration */}
+        <div className="fixed bottom-0 right-0 pointer-events-none">
+          <div className="w-64 h-64 relative">
+            <div
+              className="absolute bottom-0 right-0 w-32 h-32 bg-[#FFC107] rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="absolute bottom-16 right-16 w-24 h-24 bg-[#1A73E8] rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "200ms" }}
+            ></div>
+            <div
+              className="absolute bottom-28 right-8 w-16 h-16 bg-pink-400 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "400ms" }}
+            ></div>
+            <div
+              className="absolute bottom-40 right-20 w-12 h-12 bg-green-400 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "600ms" }}
+            ></div>
+            <div
+              className="absolute bottom-52 right-4 w-8 h-8 bg-purple-400 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "800ms" }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Left Side Bubbles */}
+        <div className="fixed bottom-0 left-0 pointer-events-none">
+          <div className="w-48 h-48 relative">
+            <div
+              className="absolute bottom-8 left-8 w-20 h-20 bg-pink-300 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "100ms" }}
+            ></div>
+            <div
+              className="absolute bottom-24 left-20 w-16 h-16 bg-yellow-300 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "300ms" }}
+            ></div>
+            <div
+              className="absolute bottom-36 left-4 w-12 h-12 bg-blue-300 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "500ms" }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Top Floating Elements */}
+        <div className="fixed top-20 right-20 pointer-events-none">
+          <div
+            className="w-6 h-6 bg-yellow-300 rounded-full opacity-20 animate-bounce"
+            style={{ animationDelay: "1000ms" }}
+          ></div>
+        </div>
+
+        <div className="fixed top-32 left-16 pointer-events-none">
+          <div
+            className="w-4 h-4 bg-pink-300 rounded-full opacity-20 animate-bounce"
+            style={{ animationDelay: "1200ms" }}
+          ></div>
+        </div>
+      </main>
+
+      {/* Add Note Modal */}
+      <AddNoteModal
+        isOpen={showAddNote}
+        onClose={() => setShowAddNote(false)}
+      />
+    </>
   );
 };
 

@@ -357,36 +357,38 @@ const Header = () => {
                   </div>
                 </div>
               </MenuItem>
-
-              <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
-                <div className="flex items-center gap-3 text-base">
-                  <div className="p-2 bg-blue-50 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-blue-600"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-medium">My Children</div>
-                    <div className="text-xs text-gray-500">
-                      Manage connected accounts
+              <Link to="/profile">
+                <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
+                  <div className="flex items-center gap-3 text-base">
+                    <div className="p-2 bg-blue-50 rounded-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-blue-600"
+                      >
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="font-medium">My Profile</div>
+                      <div className="text-xs text-gray-500">
+                        Manage connected accounts
+                      </div>
                     </div>
                   </div>
-                </div>
-              </MenuItem>
+                </MenuItem>
+              </Link>
+
               {/* <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
                 <div className="flex items-center gap-3 text-base">
                   <div className="p-2 bg-green-50 rounded-lg">
@@ -473,7 +475,7 @@ const Header = () => {
                   </div>
                 </div>
               </MenuItem>
-              <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
+              {/* <MenuItem className="px-4 py-3 cursor-pointer hover:bg-gray-50">
                 <div className="flex items-center gap-3 text-base">
                   <div className="p-2 bg-pink-50 rounded-lg">
                     <svg
@@ -501,7 +503,7 @@ const Header = () => {
                     3
                   </span>
                 </div>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem>
                 <button
                   onClick={handleLogout}

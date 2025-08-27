@@ -228,9 +228,9 @@ const Home = () => {
               <h2 className="text-xl font-semibold text-[#212121]">
                 Student Progress
               </h2>
-              <button className="text-[#1A73E8] hover:underline flex items-center gap-2">
+              {/* <button className="text-[#1A73E8] hover:underline flex items-center gap-2">
                 View All <ArrowRight className="w-4 h-4" />
-              </button>
+              </button> */}
             </div>
             <div className="space-y-6">
               <div className="p-4 rounded-2xl border-2 border-gray-100">

@@ -1,277 +1,575 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import {
-  faCalendarPlus,
-  faArrowLeft,
-  faPaperPlane,
-} from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+  Calendar,
+  Plus,
+  Clock,
+  Check,
+  Video,
+  FileText,
+  ChevronDown,
+  CalendarDays,
+  Heart,
+  Calculator,
+  Book,
+  Beaker,
+} from "lucide-react";
+import { PageMetadata } from "../components/PageMetadata";
+import CreateAvailabilityModal from "../components/modals/CreateAvailability";
+import ViewNotesModal from "../components/modals/ViewNotesModal";
 
 const ScheduleSession = () => {
-  const navigate = useNavigate();
-  const [selectedMentee, setSelectedMentee] = useState("Sarah"); // Default selected mentee
-  const formRef = useRef(null);
-  const menteeButtonsRef = useRef(null);
+  const [showCreateAvailability, setShowCreateAvailability] = useState(false);
+  const [showViewNotes, setShowViewNotes] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [activeTab, setActiveTab] = useState("all");
+  const [visibleBookings, setVisibleBookings] = useState(4);
+  const [weekFilter, setWeekFilter] = useState("This Week");
 
-  const mentees = [
+  const allBookings = [
     {
-      name: "Sarah",
-      avatar:
+      id: "1",
+      studentName: "Emma Johnson",
+      studentAvatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg",
+      subject: "Creative Arts",
+      grade: "Grade 3",
+      date: "March 18, 2025 (Tuesday)",
+      time: "3:00 PM - 4:00 PM",
+      topic: "Drawing & Painting Basics",
+      status: "pending",
+      note: "Emma loves drawing and would like to learn proper techniques. She's excited about this session!",
+      tags: ["New Request"],
+    },
+    {
+      id: "2",
+      studentName: "Sophie Chen",
+      studentAvatar:
         "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg",
-      statusColor: "bg-green-300",
+      subject: "Mathematics",
+      grade: "Grade 4",
+      date: "March 16, 2025 (Tomorrow)",
+      time: "2:00 PM - 3:00 PM",
+      topic: "Multiplication Tables Practice",
+      status: "confirmed",
+      note: "Review 6-9 times tables and introduce division concepts through fun games and activities.",
+      tags: ["Tomorrow"],
     },
     {
-      name: "Mike",
-      avatar:
+      id: "3",
+      studentName: "Lily Parker",
+      studentAvatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg",
+      subject: "English Literature",
+      grade: "Grade 2",
+      date: "March 20, 2025 (Thursday)",
+      time: "4:30 PM - 5:30 PM",
+      topic: "Story Reading & Comprehension",
+      status: "pending",
+      note: "Part of a weekly reading program. Lily is working on improving her reading fluency and vocabulary.",
+      tags: ["Recurring"],
+    },
+    {
+      id: "4",
+      studentName: "Max Thompson",
+      studentAvatar:
         "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-7.jpg",
-      statusColor: "bg-blue-300",
+      subject: "Science",
+      grade: "Grade 5",
+      date: "March 14, 2025 (Yesterday)",
+      time: "1:00 PM - 2:00 PM",
+      topic: "Solar System Exploration",
+      status: "completed",
+      note: "Great session! Max learned about planets and their characteristics. Notes have been shared with parents.",
+      tags: ["Yesterday"],
     },
     {
-      name: "Mona",
-      avatar:
-        "https://images.pexels.com/photos/5148662/pexels-photo-5148662.jpeg?auto=compress&w=128&q=80",
-      statusColor: "bg-pink-200",
+      id: "5",
+      studentName: "Oliver Davis",
+      studentAvatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg",
+      subject: "Physics",
+      grade: "Grade 6",
+      date: "March 22, 2025 (Friday)",
+      time: "5:00 PM - 6:00 PM",
+      topic: "Basic Physics Concepts",
+      status: "confirmed",
+      note: "Introduction to forces and motion through interactive experiments.",
+      tags: ["This Week"],
+    },
+    {
+      id: "6",
+      studentName: "Ava Wilson",
+      studentAvatar:
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-4.jpg",
+      subject: "History",
+      grade: "Grade 4",
+      date: "March 19, 2025 (Wednesday)",
+      time: "3:30 PM - 4:30 PM",
+      topic: "Ancient Civilizations",
+      status: "pending",
+      note: "Exploring ancient Egypt and its fascinating culture.",
+      tags: ["New Request"],
     },
   ];
 
-  useEffect(() => {
-    const handleFormSubmit = (e) => {
-      e.preventDefault();
-      alert("Session Scheduled! 🌱");
-      navigate("/"); // Navigate to dashboard or a confirmation page
-    };
+  const filteredBookings = allBookings.filter((booking) => {
+    if (activeTab === "all") return true;
+    return booking.status === activeTab;
+  });
 
-    const currentFormRef = formRef.current;
-    if (currentFormRef) {
-      currentFormRef.addEventListener("submit", handleFormSubmit);
+  const displayedBookings = filteredBookings.slice(0, visibleBookings);
+
+  const handleViewNotes = (studentData) => {
+    setSelectedStudent(studentData);
+    setShowViewNotes(true);
+  };
+
+  const handleAccept = (bookingId) => {
+    alert(
+      `Booking ${bookingId} has been accepted! The student and parent will be notified.`
+    );
+  };
+
+  const handleReschedule = (bookingId) => {
+    alert(
+      `Rescheduling booking ${bookingId}. A calendar will open to select new time slots.`
+    );
+  };
+
+  const handleJoinSession = (bookingId) => {
+    alert(`Joining session ${bookingId}. Opening video call platform...`);
+  };
+
+  const handleLoadMore = () => {
+    setVisibleBookings((prev) => prev + 4);
+  };
+
+  const toggleWeekFilter = () => {
+    const options = ["This Week", "Next Week", "This Month", "All Time"];
+    const currentIndex = options.indexOf(weekFilter);
+    const nextIndex = (currentIndex + 1) % options.length;
+    setWeekFilter(options[nextIndex]);
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "pending":
+        return <Clock className="text-white w-3 h-3" />;
+      case "confirmed":
+        return <Check className="text-white w-3 h-3" />;
+      case "completed":
+        return <Check className="text-white w-3 h-3" />;
+      default:
+        return <Clock className="text-white w-3 h-3" />;
     }
+  };
 
-    return () => {
-      if (currentFormRef) {
-        currentFormRef.removeEventListener("submit", handleFormSubmit);
-      }
-    };
-  }, [navigate]);
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-orange-400";
+      case "confirmed":
+        return "bg-green-500";
+      case "completed":
+        return "bg-gray-500";
+      default:
+        return "bg-orange-400";
+    }
+  };
 
-  const handleMenteeSelect = (menteeName) => {
-    setSelectedMentee(menteeName);
+  const getSubjectIcon = (subject) => {
+    switch (subject.toLowerCase()) {
+      case "creative arts":
+        return <Heart className="text-pink-500 w-4 h-4" />;
+      case "mathematics":
+        return <Calculator className="text-[#FFC107] w-4 h-4" />;
+      case "english literature":
+        return <Book className="text-purple-500 w-4 h-4" />;
+      case "science":
+        return <Beaker className="text-green-500 w-4 h-4" />;
+      case "physics":
+        return <Beaker className="text-blue-500 w-4 h-4" />;
+      case "history":
+        return <Book className="text-orange-500 w-4 h-4" />;
+      default:
+        return <Book className="text-gray-500 w-4 h-4" />;
+    }
   };
 
   return (
     <>
-      {/* Bubbles Decorations */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
-        <div
-          className="absolute left-12 top-40 w-24 h-24 bg-[#1A73E8] opacity-20 rounded-full blur-2xl animate-pulse"
-          style={{ animationDelay: "500ms" }}
-        ></div>
-        <div className="absolute right-36 top-10 w-14 h-14 bg-[#FFC107] opacity-30 rounded-full blur-lg animate-bounce"></div>
-        <div className="absolute right-16 bottom-72 w-20 h-20 bg-[#1A73E8] opacity-10 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute left-1/2 bottom-16 w-32 h-32 bg-[#FFC107] opacity-10 rounded-full blur-2xl animate-bounce"></div>
-        <div className="absolute left-1/3 top-1/4 w-10 h-10 bg-[#1A73E8] opacity-20 rounded-full blur-sm animate-bounce"></div>
-      </div>
-
-      <main
-        id="main-schedule-session"
-        className="relative z-10 bg-[#F5F7FA] min-h-screen"
-      >
-        <div className="container mx-auto px-6 py-12 max-w-3xl">
+      <PageMetadata
+        title="Session Bookings | SkillSeed"
+        description="View and manage your session bookings"
+      />
+      <main className="bg-[#F5F7FA] py-12">
+        <div className="container mx-auto px-6">
+          {/* Page Header */}
           <div
-            id="schedule-session-header"
-            className="flex items-center gap-4 mb-10"
+            id="page-header"
+            className="flex justify-between items-center mb-8"
           >
-            <div className="w-14 h-14 bg-[#1A73E8] rounded-full flex items-center justify-center shadow-lg border-4 border-[#FFC107]">
-              <FontAwesomeIcon
-                icon={faCalendarPlus}
-                className="text-white text-2xl"
-              />
-            </div>
-            <div>
-              <h1
-                className="text-3xl font-extrabold text-[#212121] leading-tight mb-1"
-                style={{ fontFamily: "'Nunito', sans-serif" }}
-              >
-                Schedule a Session
+            <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-bold text-[#212121]">
+                Session Bookings
               </h1>
-              <p className="text-md text-gray-600 font-medium">
-                Plan your next fun learning adventure!
-              </p>
+              <div className="w-8 h-8 bg-[#FFC107] rounded-full animate-bounce opacity-20"></div>
+              <div
+                className="w-6 h-6 bg-[#1A73E8] rounded-full animate-bounce opacity-20"
+                style={{ animationDelay: "200ms" }}
+              ></div>
+              <div
+                className="w-4 h-4 bg-pink-400 rounded-full animate-bounce opacity-20"
+                style={{ animationDelay: "400ms" }}
+              ></div>
+            </div>
+            <div className="flex gap-4">
+              <button
+                onClick={toggleWeekFilter}
+                className="px-6 py-3 rounded-full bg-white text-[#212121] border hover:border-[#1A73E8] shadow-sm"
+              >
+                <Calendar className="w-4 h-4 mr-2 inline" />
+                {weekFilter}
+              </button>
+              <button
+                onClick={() => setShowCreateAvailability(true)}
+                className="px-6 py-3 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600 shadow-sm"
+              >
+                <Plus className="w-4 h-4 mr-2 inline" />
+                Create Availability
+              </button>
             </div>
           </div>
 
-          <form
-            ref={formRef}
-            id="schedule-session-form"
-            className="bg-white rounded-3xl shadow-xl px-10 py-10 space-y-8 relative overflow-visible"
-          >
-            {/* "Baby" avatar floating on card */}
-            <div className="absolute -right-16 -top-8 z-20">
-              <img
-                src="https://images.pexels.com/photos/416161/pexels-photo-416161.jpeg?auto=compress&w=128&q=80"
-                alt="Decorative Avatar"
-                className="w-24 h-24 rounded-full border-4 border-[#FFC107] shadow-lg object-cover ring ring-[#1A73E8] ring-offset-4"
-              />
-            </div>
-
-            <div id="select-mentee-block" className="flex flex-col gap-1">
-              <label
-                htmlFor="mentee"
-                className="font-semibold text-lg text-[#1A73E8] mb-1"
-              >
-                Select Student
-              </label>
-              <div ref={menteeButtonsRef} className="flex gap-4 flex-wrap">
-                {mentees.map((mentee) => (
-                  <button
-                    key={mentee.name}
-                    type="button"
-                    onClick={() => handleMenteeSelect(mentee.name)}
-                    className={`rounded-full border-4 hover:border-[#FFC107] transition p-0 bg-white shadow-md flex flex-col items-center w-20 h-20 focus:outline-none focus:ring-2 focus:ring-[#FFC107] relative ${
-                      selectedMentee === mentee.name
-                        ? "border-[#1A73E8]"
-                        : "border-gray-100"
-                    }`}
-                  >
-                    <img
-                      src={mentee.avatar}
-                      alt={mentee.name}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
-                    <span className="text-xs text-[#212121] font-medium mt-1">
-                      {mentee.name}
-                    </span>
-                    <span
-                      className={`absolute top-2 right-2 w-3 h-3 ${mentee.statusColor} rounded-full border border-white`}
-                    ></span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div id="subject-topic-block" className="flex flex-col gap-1">
-              <label
-                htmlFor="subject"
-                className="font-semibold text-lg text-[#1A73E8] mb-1"
-              >
-                Subject
-              </label>
-              <select
-                id="subject"
-                name="subject"
-                className="rounded-full py-3 px-5 border border-gray-200 focus:border-[#1A73E8] text-[#212121] font-medium text-base shadow transition w-full outline-none bg-gray-50"
-              >
-                <option>Mathematics</option>
-                <option>Science</option>
-                <option>Reading</option>
-                <option>Arts & Crafts</option>
-                <option>Music</option>
-              </select>
-            </div>
-
-            <div
-              id="session-details-block"
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          {/* Filter Tabs */}
+          <div id="filter-tabs" className="flex gap-2 mb-8">
+            <button
+              onClick={() => setActiveTab("all")}
+              className={`px-6 py-3 rounded-full shadow-sm ${
+                activeTab === "all"
+                  ? "bg-[#1A73E8] text-white"
+                  : "bg-white text-[#212121] hover:bg-blue-50"
+              }`}
             >
-              <div>
-                <label
-                  htmlFor="date"
-                  className="font-semibold text-lg text-[#1A73E8] mb-1"
+              All Bookings
+            </button>
+            <button
+              onClick={() => setActiveTab("pending")}
+              className={`px-6 py-3 rounded-full shadow-sm ${
+                activeTab === "pending"
+                  ? "bg-[#1A73E8] text-white"
+                  : "bg-white text-[#212121] hover:bg-blue-50"
+              }`}
+            >
+              Pending
+            </button>
+            <button
+              onClick={() => setActiveTab("confirmed")}
+              className={`px-6 py-3 rounded-full shadow-sm ${
+                activeTab === "confirmed"
+                  ? "bg-[#1A73E8] text-white"
+                  : "bg-white text-[#212121] hover:bg-blue-50"
+              }`}
+            >
+              Confirmed
+            </button>
+            <button
+              onClick={() => setActiveTab("completed")}
+              className={`px-6 py-3 rounded-full shadow-sm ${
+                activeTab === "completed"
+                  ? "bg-[#1A73E8] text-white"
+                  : "bg-white text-[#212121] hover:bg-blue-50"
+              }`}
+            >
+              Completed
+            </button>
+          </div>
+
+          {/* Booking Cards Grid */}
+          <div
+            id="bookings-grid"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            {displayedBookings.map((booking) => (
+              <div
+                key={booking.id}
+                className={`bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition-all ${
+                  booking.status === "completed" ? "opacity-75" : ""
+                }`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <img
+                        src={booking.studentAvatar}
+                        alt={booking.studentName}
+                        className={`w-16 h-16 rounded-full border-4 ${
+                          booking.status === "pending"
+                            ? "border-pink-100"
+                            : booking.status === "confirmed"
+                            ? "border-green-100"
+                            : "border-gray-200"
+                        }`}
+                      />
+                      <div
+                        className={`absolute -top-1 -right-1 w-6 h-6 ${getStatusColor(
+                          booking.status
+                        )} rounded-full flex items-center justify-center`}
+                      >
+                        {getStatusIcon(booking.status)}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-[#212121]">
+                        {booking.studentName.split(" ")[0]}'s{" "}
+                        {booking.subject.includes("Arts")
+                          ? "Art Session"
+                          : booking.subject.includes("Math")
+                          ? "Math Fun"
+                          : booking.subject.includes("English")
+                          ? "Reading Club"
+                          : booking.subject.includes("Science") ||
+                            booking.subject.includes("Physics")
+                          ? "Science Lab"
+                          : "Learning Session"}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {booking.grade} • {booking.subject}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            booking.status === "pending"
+                              ? "bg-orange-100 text-orange-700"
+                              : booking.status === "confirmed"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {booking.status.charAt(0).toUpperCase() +
+                            booking.status.slice(1)}
+                        </span>
+                        {booking.tags.map((tag, index) => (
+                          <span
+                            key={index}
+                            className={`px-3 py-1 rounded-full text-xs ${
+                              tag === "New Request"
+                                ? "bg-pink-100 text-pink-700"
+                                : tag === "Tomorrow"
+                                ? "bg-blue-100 text-blue-700"
+                                : tag === "Recurring"
+                                ? "bg-purple-100 text-purple-700"
+                                : tag === "Yesterday"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-gray-100 text-gray-700"
+                            }`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3">
+                    <CalendarDays
+                      className={`w-4 h-4 ${
+                        booking.status === "completed"
+                          ? "text-gray-500"
+                          : "text-[#1A73E8]"
+                      }`}
+                    />
+                    <span className="text-sm text-gray-700">
+                      {booking.date}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Clock
+                      className={`w-4 h-4 ${
+                        booking.status === "completed"
+                          ? "text-gray-500"
+                          : "text-[#1A73E8]"
+                      }`}
+                    />
+                    <span className="text-sm text-gray-700">
+                      {booking.time}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {getSubjectIcon(booking.subject)}
+                    <span className="text-sm text-gray-700">
+                      {booking.topic}
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className={`p-4 rounded-2xl mb-4 ${
+                    booking.status === "pending"
+                      ? "bg-blue-50"
+                      : booking.status === "confirmed"
+                      ? "bg-green-50"
+                      : "bg-gray-50"
+                  }`}
                 >
-                  Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  className="rounded-full py-3 px-5 border border-gray-200 focus:border-[#1A73E8] text-[#212121] font-medium text-base shadow transition w-full outline-none bg-gray-50"
-                />
+                  <h4 className="font-semibold text-sm text-[#212121] mb-2">
+                    {booking.status === "pending"
+                      ? "Parent's Note:"
+                      : booking.status === "confirmed"
+                      ? "Session Focus:"
+                      : "Session Summary:"}
+                  </h4>
+                  <p className="text-sm text-gray-600">{booking.note}</p>
+                </div>
+
+                <div className="flex gap-3">
+                  {booking.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() => handleAccept(booking.id)}
+                        className="flex-1 px-4 py-3 rounded-full bg-[#1A73E8] text-white hover:bg-blue-600 shadow-sm font-medium"
+                      >
+                        <Check className="w-4 h-4 mr-2 inline" />
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleReschedule(booking.id)}
+                        className="flex-1 px-4 py-3 rounded-full border-2 border-[#1A73E8] text-[#1A73E8] hover:bg-blue-50 font-medium"
+                      >
+                        <Calendar className="w-4 h-4 mr-2 inline" />
+                        Reschedule
+                      </button>
+                    </>
+                  )}
+                  {booking.status === "confirmed" && (
+                    <>
+                      <button
+                        onClick={() => handleJoinSession(booking.id)}
+                        className="flex-1 px-4 py-3 rounded-full bg-green-500 text-white hover:bg-green-600 shadow-sm font-medium"
+                      >
+                        <Video className="w-4 h-4 mr-2 inline" />
+                        Join Session
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleViewNotes({
+                            name: booking.studentName,
+                            avatar: booking.studentAvatar,
+                            subject: booking.subject,
+                            grade: booking.grade,
+                          })
+                        }
+                        className="flex-1 px-4 py-3 rounded-full border-2 border-green-500 text-green-600 hover:bg-green-50 font-medium"
+                      >
+                        <FileText className="w-4 h-4 mr-2 inline" />
+                        View Notes
+                      </button>
+                    </>
+                  )}
+                  {booking.status === "completed" && (
+                    <>
+                      <button className="flex-1 px-4 py-3 rounded-full bg-gray-200 text-gray-600 font-medium cursor-not-allowed">
+                        <Check className="w-4 h-4 mr-2 inline" />
+                        Completed
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleViewNotes({
+                            name: booking.studentName,
+                            avatar: booking.studentAvatar,
+                            subject: booking.subject,
+                            grade: booking.grade,
+                          })
+                        }
+                        className="flex-1 px-4 py-3 rounded-full border-2 border-gray-300 text-gray-600 hover:bg-gray-50 font-medium"
+                      >
+                        <FileText className="w-4 h-4 mr-2 inline" />
+                        View Notes
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
-              <div>
-                <label
-                  htmlFor="time"
-                  className="font-semibold text-lg text-[#1A73E8] mb-1"
-                >
-                  Time
-                </label>
-                <input
-                  type="time"
-                  id="time"
-                  name="time"
-                  className="rounded-full py-3 px-5 border border-gray-200 focus:border-[#1A73E8] text-[#212121] font-medium text-base shadow transition w-full outline-none bg-gray-50"
-                />
-              </div>
-            </div>
+            ))}
+          </div>
 
-            <div id="duration-block" className="flex flex-col gap-1">
-              <label
-                htmlFor="duration"
-                className="font-semibold text-lg text-[#1A73E8] mb-1"
-              >
-                Duration
-              </label>
-              <select
-                id="duration"
-                name="duration"
-                className="rounded-full py-3 px-5 border border-gray-200 focus:border-[#1A73E8] text-[#212121] font-medium text-base shadow transition w-full outline-none bg-gray-50"
-              >
-                <option>30 mins</option>
-                <option>45 mins</option>
-                <option>60 mins</option>
-              </select>
-            </div>
-
-            <div id="session-note-block" className="flex flex-col gap-1">
-              <label
-                htmlFor="notes"
-                className="font-semibold text-lg text-[#1A73E8] mb-1"
-              >
-                Notes (Optional)
-              </label>
-              <textarea
-                id="notes"
-                name="notes"
-                rows={2}
-                placeholder="Share ideas for a fun session, e.g., 'Let's play a numbers game!'"
-                className="rounded-2xl py-3 px-5 border border-gray-200 focus:border-[#1A73E8] text-[#212121] font-medium text-base shadow transition w-full outline-none bg-gray-50 resize-none"
-              ></textarea>
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8">
+          {/* Load More Button */}
+          {visibleBookings < filteredBookings.length && (
+            <div id="load-more" className="text-center mt-8">
               <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="flex items-center gap-2 px-7 py-3 rounded-full border-2 border-[#1A73E8] text-[#1A73E8] font-bold bg-white hover:bg-blue-50 transition-all shadow-sm text-lg w-full sm:w-auto justify-center"
+                onClick={handleLoadMore}
+                className="px-8 py-3 rounded-full bg-white text-[#1A73E8] border-2 border-[#1A73E8] hover:bg-blue-50 shadow-sm font-medium"
               >
-                <FontAwesomeIcon icon={faArrowLeft} /> Cancel
-              </button>
-              <button
-                type="submit"
-                className="flex items-center gap-2 px-10 py-3 rounded-full bg-[#1A73E8] text-white font-bold text-lg shadow-xl hover:bg-blue-700 transition-all w-full sm:w-auto justify-center"
-              >
-                <FontAwesomeIcon icon={faPaperPlane} /> Schedule Session
+                <ChevronDown className="w-4 h-4 mr-2 inline" />
+                Load More Bookings
               </button>
             </div>
-          </form>
+          )}
+        </div>
+
+        {/* Floating Bubbles Decoration */}
+        <div className="fixed bottom-0 right-0 pointer-events-none">
+          <div className="w-64 h-64 relative">
+            <div
+              className="absolute bottom-0 right-0 w-32 h-32 bg-[#FFC107] rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="absolute bottom-16 right-16 w-24 h-24 bg-[#1A73E8] rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "200ms" }}
+            ></div>
+            <div
+              className="absolute bottom-28 right-8 w-16 h-16 bg-pink-400 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "400ms" }}
+            ></div>
+            <div
+              className="absolute bottom-40 right-20 w-12 h-12 bg-green-400 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "600ms" }}
+            ></div>
+            <div
+              className="absolute bottom-52 right-4 w-8 h-8 bg-purple-400 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "800ms" }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Left Side Bubbles */}
+        <div className="fixed bottom-0 left-0 pointer-events-none">
+          <div className="w-48 h-48 relative">
+            <div
+              className="absolute bottom-8 left-8 w-20 h-20 bg-pink-300 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "100ms" }}
+            ></div>
+            <div
+              className="absolute bottom-24 left-20 w-16 h-16 bg-yellow-300 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "300ms" }}
+            ></div>
+            <div
+              className="absolute bottom-36 left-4 w-12 h-12 bg-blue-300 rounded-full opacity-10 animate-bounce"
+              style={{ animationDelay: "500ms" }}
+            ></div>
+          </div>
         </div>
       </main>
 
-      {/* Decorative Bubbles Bottom Right */}
-      <div
-        id="footer-bubbles"
-        className="fixed bottom-0 right-0 pointer-events-none z-0"
-      >
-        <div className="w-72 h-72 relative">
-          <div className="absolute bottom-0 right-0 w-36 h-36 bg-[#FFC107] rounded-full opacity-10 animate-bounce"></div>
-          <div
-            className="absolute bottom-12 right-16 w-20 h-20 bg-[#1A73E8] rounded-full opacity-10 animate-bounce"
-            style={{ animationDelay: "200ms" }}
-          ></div>
-          <div
-            className="absolute bottom-24 right-8 w-16 h-16 bg-green-400 rounded-full opacity-10 animate-bounce"
-            style={{ animationDelay: "400ms" }}
-          ></div>
-        </div>
-      </div>
+      {/* Modals */}
+      <CreateAvailabilityModal
+        isOpen={showCreateAvailability}
+        onClose={() => setShowCreateAvailability(false)}
+      />
+
+      {selectedStudent && (
+        <ViewNotesModal
+          isOpen={showViewNotes}
+          onClose={() => setShowViewNotes(false)}
+          studentName={selectedStudent.name}
+          studentAvatar={selectedStudent.avatar}
+          subject={selectedStudent.subject}
+          grade={selectedStudent.grade}
+        />
+      )}
     </>
   );
 };
