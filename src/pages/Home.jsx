@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import {
   Calendar,
   Plus,
@@ -18,18 +20,42 @@ import {
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("mentorToken");
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [showStudentImpactModal, setShowStudentImpactModal] = useState(false);
   const today = new Date();
   const month = today.toLocaleString("default", { month: "long" });
   const year = today.getFullYear();
+
+  const fetchUserDetails = async () => {
+    const { data } = await axios.get(`${apiURL}/mentor/dashboard/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    console.log(data);
+    return data;
+  };
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["userDetails-home"],
+    queryFn: fetchUserDetails,
+    enabled: !!token,
+    staleTime: 5 * 60 * 1000,
+  });
   return (
     <main className="bg-[#F5F7FA] min-h-[800px] py-6 sm:py-8 md:py-12">
       <div className="w-full px-2 sm:px-4">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 md:mb-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
           <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold text-[#212121]">
-              Mentor Dashboard
+            <h1 className="text-lg md:text-2xl font-semibold text-[#212121]">
+              Welcome Mentor {userData?.firstName}
             </h1>
             <div className="w-8 h-8 bg-[#FFC107] rounded-full animate-bounce opacity-20"></div>
             <div
@@ -65,7 +91,9 @@ const Home = () => {
               </span>
             </div>
             <div className="flex items-end gap-4">
-              <span className="text-3xl font-bold text-[#212121]">12</span>
+              <span className="text-3xl font-bold text-[#212121]">
+                {userData?.students?.length}
+              </span>
               {/* <span className="text-green-500 text-sm flex items-center gap-1">
                 <ArrowRight className="w-3 h-3 rotate-[-45deg]" />
                 +3
@@ -86,7 +114,7 @@ const Home = () => {
               </span>
             </div>
             <div className="flex items-end gap-4">
-              <span className="text-3xl font-bold text-[#212121]">48</span>
+              <span className="text-3xl font-bold text-[#212121]">0</span>
               {/* <span className="text-green-500 text-sm flex items-center gap-1">
                 <ArrowRight className="w-3 h-3 rotate-[-45deg]" />
                 +8
@@ -105,7 +133,7 @@ const Home = () => {
               </span>
             </div>
             <div className="flex items-end gap-4">
-              <span className="text-3xl font-bold text-[#212121]">4.8</span>
+              <span className="text-3xl font-bold text-[#212121]">0</span>
               <div className="flex text-[#FFC107]">
                 <Star className="w-4 h-4 fill-current" />
                 <Star className="w-4 h-4 fill-current" />

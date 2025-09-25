@@ -352,7 +352,7 @@ const Header = () => {
                       {userData?.firstName + " " + userData?.lastName}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      3 children connected
+                      {userData?.students?.length} children connected
                     </p>
                   </div>
                 </div>
